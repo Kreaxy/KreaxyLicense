@@ -1,3 +1,21 @@
+<style type="text/css">
+	.wp-list-table .column-plugin {
+		width: 30% !important;
+	}
+	.wp-list-table .column-category {
+		width: 30% !important;
+	}
+	.wp-list-table .column-slug {
+		width: 20% !important;
+	}
+	.wp-list-table .column-updated_at {
+		width: 20% !important;
+		text-align: center;
+	}
+	.row-actions {
+		visibility : visible !important;
+	}
+</style>
 <div class="wrap">
 	<h2 class="nav-tab-wrapper" style="padding-left:0px !important;">
 		<?php
@@ -22,7 +40,12 @@
 			<div class="welcome-panel-column-container">
 				<p>
 					<form action="" method="POST">
-						
+						<?php
+							$tables = new pluginsTable();
+							$tables->prepare_items();
+							$tables->search_box( 'search', 'search_id' );
+							$tables->display();
+						?>
 					</form>
 				</p>
 			</div>

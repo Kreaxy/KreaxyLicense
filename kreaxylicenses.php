@@ -19,6 +19,7 @@ class KreaxyLicenses {
 		register_activation_hook( __FILE__, array( $this, 'kl_activation' ) );
 		add_action( 'admin_menu', array( $this, 'kl_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'kl_admin_init' ) );
+		add_action( 'template_redirect', array( $this, 'kl_api' ) );
 	}
 
 	public function kl_activation() {
@@ -196,6 +197,35 @@ SQL;
 
 			wp_safe_redirect( admin_url() . 'admin.php?page=' . KREAXYLICENSES_SLUG . '&tab=licenses&node=license&license=' . $idLicense );
 			exit();
+		}
+	}
+
+	public function kl_api() {
+		if ( isset( $_GET['kreaxyLicense'] ) ) {
+			if ( $_GET['kreaxyLicense'] == 'true' ) {
+				if ( isset( $_GET['action'] ) ) {
+					require_once( KREAXYLICENSES_PLUGIN_DIR . 'codes/utilities/apis.class.php' );
+					require_once( KREAXYLICENSES_PLUGIN_DIR . 'codes/apis/apis.php' );
+					$utilities = new ApiUtilities();
+					$api = new KreaxyLicenseApi();
+					$action = sanitize_text_field( $_GET['action'] );
+
+					switch ( $action ) {
+						case 'activateLicense':
+							$email = urldecode( sanitize_text_field( $_GET['kreaxyLicenseEmail'] ) );
+							$slug = urldecode( sanitize_text_field( $_GET['kreaxyLicensePluginSlug'] ) );
+							$idPlugin = $utilities->getIdPlugin( $slug );
+							
+							$runApi = $api->activateLicense( $email, $idPlugin );
+							echo $runApi;
+							break;
+						case 'testConnection':
+							echo 'CONNECTION_OK';
+							break;
+					}
+					exit();
+				}
+			}
 		}
 	}
 }new KreaxyLicenses();

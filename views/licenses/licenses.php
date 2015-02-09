@@ -1,3 +1,25 @@
+<style type="text/css">
+	.wp-list-table .column-email {
+		width: 25% !important;
+	}
+	.wp-list-table .column-plugin {
+		width: 25% !important;
+	}
+	.wp-list-table .column-status {
+		width: 20% !important;
+	}
+	.wp-list-table .column-created_at {
+		width: 15% !important;
+		text-align: center;
+	}
+	.wp-list-table .column-updated_at {
+		width: 15% !important;
+		text-align: center;
+	}
+	.row-actions {
+		visibility : visible !important;
+	}
+</style>
 <div class="wrap">
 	<h2 class="nav-tab-wrapper" style="padding-left:0px !important;">
 		<?php
@@ -22,7 +44,12 @@
 			<div class="welcome-panel-column-container">
 				<p>
 					<form action="" method="POST">
-						
+						<?php
+							$tables = new licensesTable();
+							$tables->prepare_items();
+							$tables->search_box( 'search', 'search_id' );
+							$tables->display();
+						?>
 					</form>
 				</p>
 			</div>
